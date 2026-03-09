@@ -6,6 +6,9 @@ Given an array of integers, print the elements in **reverse order** on a single 
 
 ---
 
+## Link 
+!https://www.hackerrank.com/challenges/arrays-ds/problem?isFullScreen=true
+
 ## Approach 1 — Manual Loop
 
 Build a new array by iterating from the last index down to `0`, appending each element.
