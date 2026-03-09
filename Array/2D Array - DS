@@ -1,0 +1,103 @@
+# 2D Array – DS
+
+## Problem Summary
+
+Given a 6×6 2D array, find the **maximum hourglass sum**. An hourglass is a specific pattern of 7 values that looks like this:
+
+```
+a b c
+  d
+e f g
+```
+
+There are **16 hourglasses** in total across the 6×6 grid.
+
+---
+
+## Link 
+[2D Array - DS](https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true)
+
+## What is a 2D Array?
+
+A 2D array is a grid of rows and columns. Each element is accessed with two indices — `arr[row][col]`.
+
+```
+       col0  col1  col2  col3  col4  col5
+row0 [  1,    1,    1,    0,    0,    0  ]
+row1 [  0,    1,    0,    0,    0,    0  ]
+row2 [  1,    1,    1,    0,    0,    0  ]
+row3 [  0,    0,    2,    4,    4,    0  ]
+row4 [  0,    0,    0,    2,    0,    0  ]
+row5 [  0,    0,    1,    2,    4,    0  ]
+```
+
+---
+
+## Understanding the Hourglass Pattern
+
+For any position `(i, j)`, the hourglass is made up of:
+
+```
+arr[i][j]   arr[i][j+1]   arr[i][j+2]      ← top row
+            arr[i+1][j+1]                   ← middle
+arr[i+2][j] arr[i+2][j+1] arr[i+2][j+2]   ← bottom row
+```
+
+Because the hourglass spans 3 columns and 3 rows, the top-left corner `(i, j)` can only go up to row `3` and column `3` — otherwise the hourglass would go out of bounds. That's why we loop `i` and `j` from `0` to `3` (4 positions each), giving us the 4×4 = 16 possible hourglasses.
+
+---
+
+## Solution
+
+```python
+def hourglassSum(arr):
+    max_value = -float('inf')
+
+    # We loop through rows 0 to 3, columns 0 to 3
+    for i in range(4):
+        for j in range(4):
+            # Calculate the hourglass sum using specific indices
+            top    = arr[i][j] + arr[i][j+1] + arr[i][j+2]
+            middle = arr[i+1][j+1]
+            bottom = arr[i+2][j] + arr[i+2][j+1] + arr[i+2][j+2]
+
+            current = top + middle + bottom
+
+            if current > max_value:
+                max_value = current
+
+    return max_value
+```
+
+---
+
+## Why `-float('inf')`?
+
+The array can contain negative numbers, so the maximum hourglass sum could itself be negative. Starting `max_value` at `0` would give the wrong answer in that case. By starting at negative infinity, we guarantee the first hourglass sum will always replace it, and every subsequent comparison works correctly regardless of the values.
+
+---
+
+## Step-by-Step Walkthrough
+
+Using the grid above, the hourglass starting at `(0, 0)` looks like:
+
+```
+1  1  1
+   1
+1  1  1
+```
+Sum = `1+1+1 + 1 + 1+1+1` = **7**
+
+The algorithm slides this 3×3 window across all 16 positions and keeps track of the largest sum it finds.
+
+---
+
+## Key Concepts
+
+| Concept | Explanation |
+|---------|-------------|
+| 2D Indexing | `arr[i][j]` — `i` is the row, `j` is the column |
+| Nested Loops | Outer loop for rows, inner loop for columns |
+| Sliding Window | Move the hourglass one step at a time across the grid |
+| Boundary Control | Loop only to `range(4)` to prevent going out of bounds |
+| `-float('inf')` | Safe starting value when the data can include negatives |
