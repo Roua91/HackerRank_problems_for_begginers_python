@@ -7,7 +7,7 @@ Given an array of integers, print the elements in **reverse order** on a single 
 ---
 
 ## Link 
-!https://www.hackerrank.com/challenges/arrays-ds/problem?isFullScreen=true
+[Arrays - DS](https://www.hackerrank.com/challenges/arrays-ds/problem)
 
 ## Approach 1 — Manual Loop
 
