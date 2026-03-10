@@ -1,0 +1,71 @@
+# Left Rotation
+
+## Problem Summary
+
+Given an array and a number `d`, rotate the array to the left by `d` positions. Each left rotation shifts every element one position to the left, and the first element wraps around to the end.
+
+```
+Original:  [1, 2, 3, 4, 5]   d = 2
+After 1:   [2, 3, 4, 5, 1]
+After 2:   [3, 4, 5, 1, 2]
+```
+
+---
+
+## Approach 1 — Slicing
+
+Split the array into two parts at index `d` and swap their order.
+
+```python
+def rotateLeft(d, arr):
+    # Slice from index d to end, then add slice from start to index d
+    return arr[d:] + arr[:d]
+```
+
+`arr[d:]` is everything from index `d` to the end — the part that moves to the front. `arr[:d]` is everything before index `d` — the part that wraps around to the back. Concatenating them gives the rotated result in one step.
+
+```
+arr      = [1, 2, 3, 4, 5]   d = 2
+arr[d:]  = [3, 4, 5]         ← becomes the new front
+arr[:d]  = [1, 2]            ← wraps to the back
+result   = [3, 4, 5, 1, 2]
+```
+
+This returns a **new array** and does not modify the original.
+
+---
+
+## Approach 2 — Pop and Append
+
+Simulate the rotation step by step. For each of the `d` rotations, remove the first element and add it to the end.
+
+```python
+def rotateLeft(d, arr):
+    for i in range(d):
+        # Remove the first element and store it
+        first_element = arr.pop(0)
+        # Add that element to the end of the list
+        arr.append(first_element)
+    return arr
+```
+
+`arr.pop(0)` removes and returns the element at index `0`. `arr.append(first_element)` adds it to the end. This repeats `d` times, rotating the array one step at a time.
+
+```
+Start:    [1, 2, 3, 4, 5]
+Step 1:   pop(0) → 1,  append(1) → [2, 3, 4, 5, 1]
+Step 2:   pop(0) → 2,  append(2) → [3, 4, 5, 1, 2]
+```
+
+This modifies the array **in place**.
+
+---
+
+## Comparison
+
+| Approach | How it works | Modifies Original | Performance |
+|----------|--------------|-------------------|-------------|
+| Slicing | Splits and rejoins in one step | No | O(n) |
+| Pop & Append | Simulates each rotation manually | Yes | O(n × d) |
+
+The **slicing approach** is faster and more concise. The **pop and append approach** is more explicit and easier to visualize step by step, but it runs slower because `pop(0)` has to shift every remaining element one position to the left each time it's called.
